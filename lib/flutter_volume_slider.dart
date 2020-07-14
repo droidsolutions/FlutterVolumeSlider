@@ -9,7 +9,9 @@ class FlutterVolumeSlider extends StatefulWidget {
   final Color sliderInActiveColor;
 
   FlutterVolumeSlider(
-      {this.sliderActiveColor, this.sliderInActiveColor, @required this.display});
+      {this.sliderActiveColor,
+      this.sliderInActiveColor,
+      @required this.display});
 
   @override
   _FlutterVolumeSliderState createState() => _FlutterVolumeSliderState();
@@ -54,7 +56,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
         Icon(
           CupertinoIcons.volume_mute,
           size: 25.0,
-          color: Colors.black,
+          color: Colors.white,
         ),
         Container(
           height: 175,
@@ -91,7 +93,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
         Icon(
           CupertinoIcons.volume_up,
           size: 25.0,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ],
     );
@@ -104,7 +106,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
         Icon(
           CupertinoIcons.volume_mute,
           size: 25.0,
-          color: Colors.black,
+          color: Colors.white,
         ),
         Slider(
           activeColor: widget.sliderActiveColor != null
@@ -124,7 +126,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
         Icon(
           CupertinoIcons.volume_up,
           size: 25.0,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ],
     );
