@@ -43,6 +43,8 @@ public class FlutterVolumePlugin: FlutterPlugin, MethodCallHandler {
       result.success(getMaxVolume())
     } else if (call.method == "getMinVolume") {
       result.success(getMinVolume())
+    }   else if (call.method == "getVolumne") {
+      result.success(getVolume())
     } else {
       result.notImplemented()
     }
@@ -51,6 +53,12 @@ public class FlutterVolumePlugin: FlutterPlugin, MethodCallHandler {
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
   }
+
+  fun getVolume(): Int {
+    val audioManager: AudioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
+    return audioManager.mediaCurrentVolume
+  }
+
 
   fun getMaxVolume(): Int {
     val audioManager: AudioManager = applicationContext.getSystemService(AUDIO_SERVICE) as AudioManager
