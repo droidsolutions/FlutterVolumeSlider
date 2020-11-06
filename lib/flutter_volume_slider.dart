@@ -38,7 +38,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
   Future<double> getVolume() async {
     try {
       var val = await _channel.invokeMethod('getVolume');
-      print("GOT getVolume " + val.toString());
+      print("GOT getVolume " + val?.toString() ?? "");
       return val.toDouble();
     } on PlatformException catch (e) {
       throw 'Unable to get volume : ${e.message}';

@@ -43,7 +43,7 @@ public class FlutterVolumePlugin: FlutterPlugin, MethodCallHandler {
       result.success(getMaxVolume())
     } else if (call.method == "getMinVolume") {
       result.success(getMinVolume())
-    }   else if (call.method == "getVolumne") {
+    }   else if (call.method == "getVolume") {
       result.success(getVolume())
     } else {
       result.notImplemented()
