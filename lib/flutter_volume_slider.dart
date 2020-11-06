@@ -20,7 +20,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
   @override
   void initState() {
     super.initState();
-    getVolume().then((value) => initVal = value);
+    getVolume().then((value) => setState(() => initVal = value));
   }
 
   MethodChannel _channel = MethodChannel('freekit.fr/volume');
@@ -37,7 +37,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
 
   Future<double> getVolume() async {
     try {
-      var val = await _channel.invokeMethod('getMaxVolume');
+      var val = await _channel.invokeMethod('getVolume');
       print("GOT getVolume " + val.toString());
       return val.toDouble();
     } on PlatformException catch (e) {
@@ -77,7 +77,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
               child: Slider(
                 activeColor: widget.sliderActiveColor != null ? widget.sliderActiveColor : Colors.black,
                 inactiveColor: widget.sliderInActiveColor != null ? widget.sliderInActiveColor : Colors.grey,
-                value: initVal,
+                value: initVal ?? 0,
                 divisions: 50,
                 max: maxVol.value ?? 15,
                 min: minVol.value ?? 0,
@@ -99,7 +99,7 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
     return Slider(
       activeColor: widget.sliderActiveColor != null ? widget.sliderActiveColor : Colors.black,
       inactiveColor: widget.sliderInActiveColor != null ? widget.sliderInActiveColor : Colors.grey,
-      value: initVal,
+      value: initVal ?? 0,
       max: maxVol?.value ?? 15,
       min: minVol?.value ?? 0,
       onChanged: initVal == null
