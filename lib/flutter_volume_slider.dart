@@ -15,7 +15,14 @@ class FlutterVolumeSlider extends StatefulWidget {
 }
 
 class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
-  double initVal = .1;
+  double initVal;
+
+  @override
+  void initState() {
+    super.initState();
+    getVolume().then((value) => initVal = value);
+  }
+
   MethodChannel _channel = MethodChannel('freekit.fr/volume');
 
   Future<void> changeVolume(double volume) async {
@@ -25,6 +32,16 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
       });
     } on PlatformException catch (e) {
       throw 'Unable to change volume : ${e.message}';
+    }
+  }
+
+  Future<double> getVolume() async {
+    try {
+      var val = await _channel.invokeMethod('getMaxVolume');
+      print("GOT getVolume " + val.toString());
+      return val.toDouble();
+    } on PlatformException catch (e) {
+      throw 'Unable to get volume : ${e.message}';
     }
   }
 
@@ -97,13 +114,15 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
         FutureProvider<MaxVolume>(create: (_) async => getMaxVolume(), initialData: MaxVolume(1.0)),
         FutureProvider<MinVolume>(create: (_) async => getMinVolume(), initialData: MinVolume(0.0)),
       ],
-      child: Consumer2<MaxVolume, MinVolume>(builder: (context, maxVol, minVol, child) {
-        if (widget.display == Display.HORIZONTAL) {
-          return _buildHorizontalContainer(maxVol, minVol);
-        } else {
-          return _buildVerticalContainer(maxVol, minVol);
-        }
-      }),
+      child: initVal == null
+          ? Container()
+          : Consumer2<MaxVolume, MinVolume>(builder: (context, maxVol, minVol, child) {
+              if (widget.display == Display.HORIZONTAL) {
+                return _buildHorizontalContainer(maxVol, minVol);
+              } else {
+                return _buildVerticalContainer(maxVol, minVol);
+              }
+            }),
     );
   }
 }
