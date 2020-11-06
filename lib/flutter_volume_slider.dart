@@ -79,12 +79,14 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
                 inactiveColor: widget.sliderInActiveColor != null ? widget.sliderInActiveColor : Colors.grey,
                 value: initVal,
                 divisions: 50,
-                max: maxVol.value,
-                min: minVol.value,
-                onChanged: (value) {
-                  changeVolume(value);
-                  setState(() => initVal = value);
-                },
+                max: maxVol.value ?? 15,
+                min: minVol.value ?? 0,
+                onChanged: initVal == null
+                    ? null
+                    : (value) {
+                        changeVolume(value);
+                        setState(() => initVal = value);
+                      },
               ),
             )
           ],
@@ -98,12 +100,14 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
       activeColor: widget.sliderActiveColor != null ? widget.sliderActiveColor : Colors.black,
       inactiveColor: widget.sliderInActiveColor != null ? widget.sliderInActiveColor : Colors.grey,
       value: initVal,
-      max: maxVol.value,
-      min: minVol.value,
-      onChanged: (value) {
-        changeVolume(value);
-        setState(() => initVal = value);
-      },
+      max: maxVol?.value ?? 15,
+      min: minVol?.value ?? 0,
+      onChanged: initVal == null
+          ? null
+          : (value) {
+              changeVolume(value);
+              setState(() => initVal = value);
+            },
     );
   }
 
@@ -111,18 +115,20 @@ class _FlutterVolumeSliderState extends State<FlutterVolumeSlider> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        FutureProvider<MaxVolume>(create: (_) async => getMaxVolume(), initialData: MaxVolume(1.0)),
-        FutureProvider<MinVolume>(create: (_) async => getMinVolume(), initialData: MinVolume(0.0)),
+        FutureProvider<MaxVolume>(
+          create: (_) async => getMaxVolume(),
+        ),
+        FutureProvider<MinVolume>(
+          create: (_) async => getMinVolume(),
+        ),
       ],
-      child: initVal == null
-          ? Container()
-          : Consumer2<MaxVolume, MinVolume>(builder: (context, maxVol, minVol, child) {
-              if (widget.display == Display.HORIZONTAL) {
-                return _buildHorizontalContainer(maxVol, minVol);
-              } else {
-                return _buildVerticalContainer(maxVol, minVol);
-              }
-            }),
+      child: Consumer2<MaxVolume, MinVolume>(builder: (context, maxVol, minVol, child) {
+        if (widget.display == Display.HORIZONTAL) {
+          return _buildHorizontalContainer(maxVol, minVol);
+        } else {
+          return _buildVerticalContainer(maxVol, minVol);
+        }
+      }),
     );
   }
 }
